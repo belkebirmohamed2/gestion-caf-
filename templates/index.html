@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion Commerciale</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --dark-bg: #0a0a0f;
+            --dark-card: rgba(255, 255, 255, 0.05);
+            --glass-effect: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --shadow-glow: 0 20px 40px rgba(103, 126, 234, 0.15);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            height: 100vh;
+            background: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(120, 119, 198, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.2) 0%, transparent 50%);
+            color: var(--text-primary);
+            overflow: hidden;
+            animation: backgroundPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundPulse {
+            0% { filter: brightness(1) hue-rotate(0deg); }
+            100% { filter: brightness(1.1) hue-rotate(10deg); }
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--glass-effect);
+            backdrop-filter: blur(25px);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 25px;
+            box-shadow: var(--shadow-glow);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-gradient);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 50px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            letter-spacing: -0.5px;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { 
+                filter: drop-shadow(0 0 10px rgba(79, 172, 254, 0.5));
+                transform: scale(1);
+            }
+            to { 
+                filter: drop-shadow(0 0 20px rgba(79, 172, 254, 0.8));
+                transform: scale(1.02);
+            }
+        }
+
+        .sidebar h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+            animation: underlineGrow 2s ease-in-out infinite;
+        }
+
+        @keyframes underlineGrow {
+            0%, 100% { width: 60px; opacity: 0.8; }
+            50% { width: 100px; opacity: 1; }
+        }
+
+        .sidebar button {
+            background: var(--glass-effect);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 18px 25px;
+            margin-bottom: 12px;
+            text-align: left;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.3px;
+        }
+
+        .sidebar button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            transition: left 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+        }
+
+        .sidebar button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar button:hover {
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(245, 87, 108, 0.25);
+            border-color: rgba(245, 87, 108, 0.4);
+        }
+
+        .sidebar button:hover::before {
+            left: 0;
+        }
+
+        .sidebar button:hover::after {
+            opacity: 1;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.5); }
+        }
+
+        .sidebar a {
+            text-decoration: none;
+        }
+
+        .content {
+            flex: 1;
+            padding: 50px;
+            background: transparent;
+            overflow-y: auto;
+            position: relative;
+            animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-card {
+            background: var(--glass-effect);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 60px 50px;
+            box-shadow: var(--shadow-card);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(0.5deg); }
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .content h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            animation: textGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3)); }
+            to { filter: drop-shadow(0 0 25px rgba(102, 126, 234, 0.6)); }
+        }
+
+        .content p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-weight: 400;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out 0.8s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .welcome-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 40px;
+            background: var(--success-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            animation: iconSpin 10s linear infinite, iconPulse 2s ease-in-out infinite alternate;
+            box-shadow: 0 15px 35px rgba(168, 237, 234, 0.3);
+        }
+
+        @keyframes iconSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes iconPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* Custom Scrollbar */
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: var(--accent-gradient);
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-gradient);
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--accent-gradient);
+            border-radius: 50%;
+            margin: 30px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Development Badge */
+        .dev-badge {
+            display: inline-block;
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 20px;
+            animation: badgeBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes badgeBounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 260px;
+                padding: 25px 20px;
+            }
+            .content {
+                padding: 40px 30px;
+            }
+            .content-card {
+                padding: 50px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 15px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                animation: slideInTop 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            }
+
+            @keyframes slideInTop {
+                from {
+                    transform: translateY(-100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            .sidebar h2 {
+                display: none;
+            }
+
+            .sidebar button {
+                flex: 1;
+                white-space: nowrap;
+                margin: 5px;
+                padding: 12px 20px;
+                font-size: 14px;
+                min-width: 120px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .content-card {
+                padding: 40px 30px;
+            }
+
+            .content h1 {
+                font-size: 36px;
+            }
+
+            .content p {
+                font-size: 18px;
+            }
+
+            .welcome-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 20px 15px;
+            }
+
+            .content-card {
+                padding: 30px 20px;
+            }
+
+            .content h1 {
+                font-size: 28px;
+            }
+
+            .content p {
+                font-size: 16px;
+            }
+
+            .sidebar button {
+                padding: 10px 15px;
+                font-size: 13px;
+                min-width: 100px;
+            }
+        }
+
+        /* Particle Animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 0.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <div class="sidebar">
+        <h2>Gestion</h2>
+        <a href="/propos"><button>À propos de nous</button></a>
+        <a href="/tables"><button>Tables</button></a>
+        <a href="/orders"><button>Commandes</button></a>
+        <a href="/stock"><button>Stock</button></a>
+        <a href="/revenus"><button>Revenus</button></a>
+        <a href="/depenses"><button>Dépenses</button></a>
+        <a href="/benefices"><button>Bénéfices</button></a>
+        <a href="/summary"><button>Résumé Financier</button></a>
+    </div>
+
+    <div class="content" id="main-content">
+        <div class="content-card">
+            <div class="welcome-icon">🚀</div>
+            <h1>Bienvenue dans le système de gestion</h1>
+            <p>Découvrez notre plateforme moderne et intuitive pour gérer votre commerce efficacement.</p>
+            <p>Sélectionnez une section depuis le menu pour commencer votre parcours.</p>
+        </div>
+    </div>
+
+    <script>
+        function loadContent(section) {
+            const content = document.getElementById("main-content");
+            
+            // Add loading animation
+            content.innerHTML = `
+                <div class="content-card" style="animation: cardFloat 6s ease-in-out infinite;">
+                    <h1 style="animation: textGlow 4s ease-in-out infinite alternate;">${section}</h1>
+                    <div class="loading-spinner"></div>
+                    <p>Chargement du contenu de la section "${section}"...</p>
+                    <span class="dev-badge">En développement</span>
+                </div>
+            `;
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                content.innerHTML = `
+                    <div class="content-card" style="animation: cardFloat 6s ease-in-out infinite;">
+                        <div class="welcome-icon">📊</div>
+                        <h1 style="animation: textGlow 4s ease-in-out infinite alternate;">${section}</h1>
+                        <p>Le contenu de la section "${section}" est actuellement en cours de développement.</p>
+                        <p>Cette fonctionnalité sera bientôt disponible avec une interface moderne et intuitive.</p>
+                        <span class="dev-badge">En développement</span>
+                    </div>
+                `;
+            }, 1500);
+        }
+
+        // Add dynamic particle positioning
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach(particle => {
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+        });
+    </script>
+</body>
+</html>

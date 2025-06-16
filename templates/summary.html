@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résumé Financier Journalier</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; display: flex; background-color: #f4f4f4; }
+        .sidebar {
+            width: 250px; background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: #ecf0f1; padding: 30px 20px; box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        .sidebar h2 { margin-bottom: 40px; text-align: center; font-size: 24px; font-weight: bold;
+            border-bottom: 2px solid #1abc9c; padding-bottom: 10px; }
+        .sidebar a { text-decoration: none; }
+        .sidebar button {
+            background-color: #34495e; border: none; color: white; padding: 12px 15px;
+            margin-bottom: 15px; text-align: left; border-radius: 8px; font-size: 16px;
+            cursor: pointer; transition: background 0.3s, transform 0.2s; width: 100%;
+        }
+        .sidebar button:hover { background-color: #1abc9c; transform: translateX(5px); }
+        .content { flex: 1; padding: 40px; background-color: #ffffff; }
+        h1 { color: #2c3e50; margin-bottom: 20px; font-size: 32px; }
+        form { margin-bottom: 20px; }
+        input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
+        th, td { padding: 12px 15px; text-align: center; }
+        th { background-color: #1abc9c; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .btn-delete { background-color: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Gestion</h2>
+    <a href="/propos"><button>À propos de nous</button></a>
+    <a href="/tables"><button>Tables</button></a>
+    <a href="/orders"><button>Commandes</button></a>
+    <a href="/stock"><button>Stock</button></a>
+    <a href="/revenus"><button>Revenus</button></a>
+    <a href="/depenses"><button>Dépenses</button></a>
+    <a href="/benefices"><button>Bénéfices</button></a>
+    <a href="/summary"><button>Résumé Financier</button></a>
+</div>
+
+<div class="content">
+    <h1>Résumé Financier Journalier</h1>
+
+    <form method="POST" action="/add_summary">
+        <input type="date" name="day" required>
+        <input type="number" name="revenus" placeholder="Revenus" required>
+        <input type="number" name="depenses" placeholder="Dépenses" required>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <form method="POST" action="/search_summary">
+        <input type="date" name="search_day" required>
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th><th>Revenus (DA)</th><th>Dépenses (DA)</th><th>Bénéfices (DA)</th><th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for summary in summaries %}
+            <tr>
+                <td>{{ summary[1] }}</td>
+                <td>{{ summary[2] }}</td>
+                <td>{{ summary[3] }}</td>
+                <td>{{ summary[4] }}</td>
+                <td><a href="/delete_summary/{{ summary[0] }}"><button class="btn-delete">🗑️</button></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

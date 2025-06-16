@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>À propos de nous</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 25%, #16213e 50%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Enhanced Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            z-index: -2;
+            animation: backgroundPulse 15s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            50% { opacity: 0.8; transform: scale(1.05) rotate(1deg); }
+        }
+
+        @keyframes patternMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(60px) translateY(60px); }
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 320px;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(30px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 40px 25px;
+            box-shadow: 20px 0 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: -0.01em;
+            position: relative;
+        }
+
+        .sidebar h2::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            border-radius: 1px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+        }
+
+        .sidebar button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            padding: 18px 24px;
+            margin-bottom: 15px;
+            text-align: left;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            width: 100%;
+            font-family: inherit;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .sidebar button:hover {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            transform: translateX(12px);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .sidebar button:hover::before {
+            left: 100%;
+        }
+
+        /* Main Content Styles */
+        .content {
+            flex: 1;
+            padding: 60px 50px;
+            background: transparent;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            z-index: -1;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .content h1 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            position: relative;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .content h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6);
+            border-radius: 2px;
+            filter: blur(1px);
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-weight: 400;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.8), rgba(236, 72, 153, 0.8), transparent);
+            animation: borderFlow 3s linear infinite;
+        }
+
+        .info-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .info-box:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .info-box:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 10px 40px rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .info-box .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+            text-align: center;
+            filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+        }
+
+        .info-box strong {
+            display: block;
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .info-box .value {
+            color: #e2e8f0;
+            font-size: 1rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+            z-index: -1;
+        }
+
+        .mission-section h2 {
+            color: #10b981;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .mission-section p {
+            color: #d1fae5;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: center;
+            margin: 0;
+        }
+
+        /* Team Section */
+        .team-section {
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .team-section h2 {
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .content h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .mission-section,
+            .team-section {
+                margin: 40px 0;
+                padding: 30px 20px;
+            }
+        }
+
+        /* Enhanced Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 5px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #7c3aed, #db2777);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>📋 Gestion</h2>
+    <a href="/propos"><button>📘 À propos de nous</button></a>
+    <a href="/tables"><button>🍽️ Tables</button></a>
+    <a href="/orders"><button>🧾 Commandes</button></a>
+    <a href="/stock"><button>📦 Stock</button></a>
+    <a href="/revenus"><button>Revenus</button></a>
+    <a href="/depenses"><button>Dépenses</button></a>
+    <a href="/benefices"><button>Bénéfices</button></a>
+    <a href="/summary"><button>Résumé Financier</button></a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <h1>À propos de nous</h1>
+
+    <p>Bienvenue dans notre système de gestion commerciale révolutionnaire. Nous sommes une équipe passionnée qui vise à moderniser la gestion des cafés et restaurants grâce à des outils numériques innovants et performants.</p>
+
+    <div class="info-grid">
+        <div class="info-box">
+            <span class="icon">📍</span>
+            <strong>Notre Adresse</strong>
+            <div class="value">cité hadi mohamed n 49<br>Hassasna, Saida</div>
+        </div>
+
+        <div class="info-box">
+            <span class="icon">📞</span>
+            <strong>Contactez-nous</strong>
+            <div class="value">+213 669 47 01 17<br>belkebir.mohamed20@gmail.com</div>
+        </div>
+
+        <div class="info-box">
+            <span class="icon">⏰</span>
+            <strong>Nos Horaires</strong>
+            <div class="value">Tous les jours<br>08h00 - 22h00</div>
+        </div>
+    </div>
+
+    <div class="mission-section">
+        <h2>🎯 Notre Mission</h2>
+        <p>Notre mission est de vous offrir une expérience fluide et agréable dans la gestion quotidienne de votre établissement. Nous croyons en la puissance de la technologie pour simplifier les processus complexes et améliorer l'efficacité opérationnelle.</p>
+    </div>
+
+    <div class="team-section">
+        <h2>👥 Notre Équipe</h2>
+        <p>Une équipe dédiée de professionnels passionnés par l'innovation et l'excellence dans le service client.</p>
+        
+        <div class="team-stats">
+            <div class="stat-item">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Années d'expérience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Clients satisfaits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Support client</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">99%</div>
+                <div class="stat-label">Temps de disponibilité</div>
+            </div>
+        </div>
+    </div>
+    <div style="
+        margin-top: 60px;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        letter-spacing: 1px;
+    ">
+        Développé par : BELKEBIR MOHAMED
+    </div>
+</div>
+
+</body>
+</html>

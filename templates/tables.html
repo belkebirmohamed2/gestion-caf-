@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tables - Café</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Background Animation */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 118, 117, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 177, 153, 0.2) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+
+    h1 {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+      border-radius: 2px;
+    }
+
+    .tables-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .table-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 4px 16px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden;
+    }
+
+    .table-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      background-size: 200% 100%;
+      animation: gradientShift 3s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .table-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      font-weight: 600;
+      text-align: center;
+      position: relative;
+    }
+
+    .table-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .table-card input[type="number"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+      margin-bottom: 15px;
+    }
+
+    .table-card input[type="number"]:focus {
+      outline: none;
+      border-color: #667eea;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      width: 100%;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      padding: 30px;
+      overflow-y: auto;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar h3 {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      color: #2c3e50;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Menu Sidebar */
+    #menu-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      color: #2c3e50;
+      padding: 30px 20px;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+    }
+
+    #menu-sidebar h2 {
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2c3e50;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #eee;
+    }
+
+    #menu-sidebar button {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      color: #495057;
+      font-size: 0.9rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #menu-sidebar button:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      transform: translateX(8px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    #menu-sidebar a {
+      text-decoration: none;
+    }
+
+    .food-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .food-item:hover {
+      background: #e3f2fd;
+      border-color: #667eea;
+    }
+
+    .food-item label {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .food-item input[type="checkbox"] {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      accent-color: #667eea;
+    }
+
+    .selected-items {
+      margin-top: 15px;
+      padding: 15px;
+      background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      border: 1px solid #e1f5fe;
+    }
+
+    .total {
+      font-weight: 600;
+      margin-top: 12px;
+      padding: 12px;
+      background: linear-gradient(135deg, #c8e6c9 0%, #dcedc8 100%);
+      border-radius: 12px;
+      text-align: center;
+      color: #2e7d32;
+      font-size: 1.1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        margin-left: 0;
+      }
+      
+      #menu-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .tables-container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+      }
+      
+      .sidebar {
+        width: 100%;
+        right: -100%;
+      }
+      
+      h1 {
+        font-size: 2rem;
+        padding: 20px;
+      }
+    }
+
+    /* Scrollbar Custom Style */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #5a6fd8, #6a4190);
+    }
+  </style>
+</head>
+<body>
+
+<!-- القائمة الجانبية -->
+<div class="sidebar" id="menu-sidebar">
+  <h2>📋 إدارة المقهى</h2>
+  <a href="/orders"><button>Commandes</button></a>
+  <a href="/stock"><button onclick="loadContent('Stock')">Stock</button></a>
+  <button onclick="loadContent('Revenus')">Revenus</button>
+  <button onclick="loadContent('Dépenses')">Dépenses</button>
+  <button onclick="loadContent('Bénéfices')">Bénéfices</button>
+</div>
+
+<h1>طاولات المقهى</h1>
+
+<div class="tables-container" id="tables">
+  <!-- سيتم إنشاء الطاولات ديناميكيًا -->
+</div>
+
+<div class="sidebar" id="sidebar">
+  <h3>🍽️ قائمة الطعام</h3>
+  <div id="menu-list"></div>
+  <button onclick="confirmItems()">✅ تأكيد الإختيار</button>
+</div>
+
+<script>
+  const menuItems = [
+    { name: "☕ قهوة", price: 80 },
+    { name: "🍵 شاي", price: 70 },
+    { name: "🥤 مشروب غازي", price: 90 },
+    { name: "🥐 كرواسون", price: 100 },
+    { name: "🍰 كعكة", price: 150 },
+    { name: "🍩 دونات", price: 130 }
+  ];
+
+  let selectedTable = null;
+  let selectedItems = [];
+
+  function renderTables() {
+    const container = document.getElementById("tables");
+    for (let i = 1; i <= 10; i++) {
+      const div = document.createElement("div");
+      div.className = "table-card";
+      div.innerHTML = `
+        <h3>🍽️ طاولة ${i}</h3>
+        <label>👥 عدد الأشخاص:</label>
+        <input type="number" min="1" id="people-${i}" placeholder="أدخل العدد">
+        <button onclick="openMenu(${i})">🛒 اختيار المأكولات</button>
+        <div class="selected-items" id="items-${i}"></div>
+        <div class="total" id="total-${i}"></div>
+        <button onclick="confirmOrder(${i})">✅ تأكيد الطلب</button>
+      `;
+      container.appendChild(div);
+    }
+  }
+
+  function openMenu(tableNumber) {
+    selectedTable = tableNumber;
+    selectedItems = [];
+    document.getElementById("menu-list").innerHTML = "";
+
+    menuItems.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "food-item";
+      div.innerHTML = `
+        <label><input type="checkbox" value="${index}">${item.name} - ${item.price} DA</label>
+      `;
+      document.getElementById("menu-list").appendChild(div);
+    });
+
+    document.getElementById("sidebar").classList.add("active");
+  }
+
+  function confirmItems() {
+    const checked = document.querySelectorAll('#menu-list input:checked');
+    selectedItems = Array.from(checked).map(input => menuItems[parseInt(input.value)]);
+
+    const itemsList = selectedItems.map(item => item.name).join(', ');
+    const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+
+    document.getElementById(`items-${selectedTable}`).innerHTML = `<strong>الطلبات:</strong><br>${itemsList}`;
+    document.getElementById(`total-${selectedTable}`).innerText = `💰 المجموع: ${total} DA`;
+
+    document.getElementById("sidebar").classList.remove("active");
+  }
+
+  function confirmOrder(tableNumber) {
+    const numPeople = document.getElementById(`people-${tableNumber}`).value;
+    if (!numPeople || selectedItems.length === 0) {
+      alert("⚠️ يرجى إدخال عدد الأشخاص وتحديد الطلبات.");
+      return;
+    }
+
+    const order = {
+      table_number: tableNumber,
+      num_people: parseInt(numPeople),
+      items: selectedItems.map(i => i.name).join(', '),
+      total_price: selectedItems.reduce((sum, i) => sum + i.price, 0)
+    };
+
+    fetch('/confirm_order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order)
+    }).then(res => {
+      if (res.ok) {
+        alert("✅ تم تأكيد الطلب!");
+        location.reload();
+      } else {
+        alert("❌ فشل في تأكيد الطلب.");
+      }
+    });
+  }
+
+  function loadContent(name) {
+    console.log("Loading section:", name);
+    // يمكن تعديل هذا لاحقًا لتحميل المحتوى ديناميكيًا
+  }
+
+  renderTables();
+</script>
+
+</body>
+</html>

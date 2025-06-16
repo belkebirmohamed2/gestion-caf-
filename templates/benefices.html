@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bénéfices</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; display: flex; background-color: #f4f4f4; }
+        .sidebar {
+            width: 250px; background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: #ecf0f1; padding: 30px 20px; box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        .sidebar h2 { margin-bottom: 40px; text-align: center; font-size: 24px; font-weight: bold;
+            border-bottom: 2px solid #1abc9c; padding-bottom: 10px; }
+        .sidebar a { text-decoration: none; }
+        .sidebar button {
+            background-color: #34495e; border: none; color: white; padding: 12px 15px;
+            margin-bottom: 15px; text-align: left; border-radius: 8px; font-size: 16px;
+            cursor: pointer; transition: background 0.3s, transform 0.2s; width: 100%;
+        }
+        .sidebar button:hover { background-color: #1abc9c; transform: translateX(5px); }
+
+        .content { flex: 1; padding: 50px; background-color: #ffffff; text-align: center; }
+        h1 { color: #2c3e50; margin-bottom: 20px; font-size: 32px; }
+        .box {
+            background: #ecf0f1; padding: 20px; margin-bottom: 20px;
+            border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            font-size: 24px; font-weight: bold;
+        }
+        .revenus { color: #27ae60; }
+        .depenses { color: #c0392b; }
+        .benefices { color: #2980b9; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Gestion</h2>
+    <a href="/propos"><button>À propos de nous</button></a>
+    <a href="/tables"><button>Tables</button></a>
+    <a href="/orders"><button>Commandes</button></a>
+    <a href="/stock"><button>Stock</button></a>
+    <a href="/revenus"><button>Revenus</button></a>
+    <a href="/depenses"><button>Dépenses</button></a>
+    <a href="/benefices"><button>Bénéfices</button></a>
+    <a href="/summary"><button>Résumé Financier</button></a>
+</div>
+
+<div class="content">
+    <h1>📊 Résumé des Bénéfices</h1>
+
+    <div class="box revenus">Total des Revenus: {{ revenus }} DA</div>
+    <div class="box depenses">Total des Dépenses: {{ depenses }} DA</div>
+    <div class="box benefices">Bénéfice Net: {{ benefices }} DA</div>
+</div>
+
+</body>
+</html>

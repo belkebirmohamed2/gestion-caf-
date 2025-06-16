@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Revenus</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; display: flex; background-color: #f4f4f4; }
+        .sidebar {
+            width: 250px; background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: #ecf0f1; padding: 30px 20px; box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        .sidebar h2 { margin-bottom: 40px; text-align: center; font-size: 24px; font-weight: bold;
+            border-bottom: 2px solid #1abc9c; padding-bottom: 10px; }
+        .sidebar a { text-decoration: none; }
+        .sidebar button {
+            background-color: #34495e; border: none; color: white; padding: 12px 15px;
+            margin-bottom: 15px; text-align: left; border-radius: 8px; font-size: 16px;
+            cursor: pointer; transition: background 0.3s, transform 0.2s; width: 100%;
+        }
+        .sidebar button:hover { background-color: #1abc9c; transform: translateX(5px); }
+
+        .content { flex: 1; padding: 50px; background-color: #ffffff; }
+        h1 { color: #2c3e50; margin-bottom: 20px; font-size: 32px; }
+        form { margin-bottom: 30px; }
+        input[type="text"], input[type="number"] {
+            padding: 10px; width: 100%; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;
+        }
+        button.submit-btn {
+            background-color: #28a745; color: white; padding: 12px; width: 100%;
+            border-radius: 6px; font-size: 16px; border: none; cursor: pointer;
+        }
+        button.submit-btn:hover { background-color: #218838; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
+        th, td { padding: 12px 15px; text-align: center; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .total { margin-top: 20px; font-weight: bold; font-size: 20px; color: #28a745; }
+        .btn-delete { background-color: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Gestion</h2>
+    <a href="/propos"><button>À propos de nous</button></a>
+    <a href="/tables"><button>Tables</button></a>
+    <a href="/orders"><button>Commandes</button></a>
+    <a href="/stock"><button>Stock</button></a>
+    <a href="/revenus"><button>Revenus</button></a>
+    <a href="/depenses"><button>Dépenses</button></a>
+    <a href="/benefices"><button>Bénéfices</button></a>
+    <a href="/summary"><button>Résumé Financier</button></a>
+</div>
+
+<div class="content">
+    <h1>💰 Gestion des Revenus</h1>
+
+    <form method="POST" action="/add_revenu">
+        <input type="text" name="description" placeholder="Description du revenu" required>
+        <input type="number" name="amount" placeholder="Montant en DA" step="0.01" required>
+        <button type="submit" class="submit-btn">➕ Ajouter</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Montant (DA)</th>
+                <th>Date</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for revenu in revenus %}
+            <tr>
+                <td>{{ revenu[1] }}</td>
+                <td>{{ revenu[2] }}</td>
+                <td>{{ revenu[3] }}</td>
+                <td><a href="/delete_revenu/{{ revenu[0] }}"><button class="btn-delete">🗑️</button></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total">Total des Revenus: {{ total }} DA</div>
+</div>
+
+</body>
+</html>
