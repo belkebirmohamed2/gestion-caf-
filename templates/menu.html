@@ -151,41 +151,70 @@
     const orderList = document.getElementById('order-list');
     const totalDisplay = document.getElementById('total');
 
-    let total = 0;
+    let order = {};
 
-    products.forEach(product => {
+    products.forEach((product, idx) => {
         const el = document.createElement('div');
         el.classList.add('product');
         el.innerHTML = `
             <div class="product-emoji">${product.emoji}</div>
             <div class="product-name">${product.name}</div>
             <div class="product-price">${product.price} دج</div>
+            <button onclick="addToOrder(${idx})">+</button>
+            <button onclick="removeFromOrder(${idx})">-</button>
         `;
-        el.onclick = () => addToOrder(product);
         menu.appendChild(el);
     });
 
-    function addToOrder(product) {
-        const item = document.createElement('div');
-        item.classList.add('order-item');
-        item.innerHTML = `
-            <span>${product.name}</span>
-            <span>${product.price} دج</span>
-        `;
-        orderList.appendChild(item);
-        total += product.price;
+    function addToOrder(idx) {
+        const key = products[idx].name;
+        if (!order[key]) {
+            order[key] = { ...products[idx], qty: 1 };
+        } else {
+            order[key].qty += 1;
+        }
+        renderOrder();
+    }
+
+    function removeFromOrder(idx) {
+        const key = products[idx].name;
+        if (order[key]) {
+            order[key].qty -= 1;
+            if (order[key].qty <= 0) {
+                delete order[key];
+            }
+            renderOrder();
+        }
+    }
+
+    function renderOrder() {
+        orderList.innerHTML = '';
+        let total = 0;
+        Object.values(order).forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('order-item');
+            itemDiv.innerHTML = `
+                <span>${item.name} × ${item.qty}</span>
+                <span>${item.price * item.qty} دج</span>
+            `;
+            orderList.appendChild(itemDiv);
+            total += item.price * item.qty;
+        });
         totalDisplay.innerText = total;
     }
 
     function confirmOrder() {
+        let total = 0;
+        Object.values(order).forEach(item => {
+            total += item.price * item.qty;
+        });
         if (total === 0) {
             alert("لم يتم اختيار أي منتج!");
             return;
         }
         alert(`تم تأكيد الطلب. المجموع: ${total} دج`);
-        orderList.innerHTML = '';
-        total = 0;
-        totalDisplay.innerText = total;
+        order = {};
+        renderOrder();
     }
 </script>
 
