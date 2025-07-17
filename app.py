@@ -140,26 +140,27 @@ def confirm_order():
     #return render_template('menu.html')
 
 # صفحة الطلب لطاولة معينة
-@app.route('/menu/<int:table_id>', methods=['GET', 'POST'])
+@app.route('/menu/<int:table_id>', methods=['POST'])
 def menu(table_id):
-    if request.method == 'POST':
-        num_people = int(request.form['num_people'])
-        selected_items = request.form.getlist('items')
-        total_price = float(request.form['total_price'])
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    data = request.get_json()
+    num_people = data.get('num_people', 1)
+    items = data.get('items', [])
+    total_price = data.get('total_price', 0)
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        conn = sqlite3.connect('orders.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO orders (table_number, num_people, items, total_price, timestamp)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (table_id, num_people, ', '.join(selected_items), total_price, timestamp))
-        conn.commit()
-        conn.close()
+    # تحويل قائمة المنتجات إلى نص بصيغة: "قهوة×2, شاي×1, ..."
+    items_str = ', '.join([f"{item['name']}×{item['qty']}" for item in items])
 
-        return redirect(url_for('orders'))
+    conn = sqlite3.connect('cafe.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO orders (table_number, num_people, items, total_price, timestamp)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (table_id, num_people, items_str, total_price, timestamp))
+    conn.commit()
+    conn.close()
 
-    return render_template('menu.html', table_id=table_id)
+    return jsonify({"status": "success"})
 
 # عرض الطلبات المؤكدة
 @app.route('/orders')
